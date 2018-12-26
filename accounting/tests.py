@@ -56,13 +56,13 @@ class TestBillingSchedules(unittest.TestCase):
 
     def test_monthly_billing_schedule(self):
         self.policy.billing_schedule = "Monthly"
-        # No invoice currently exist
+        # No invoices currently exist
         self.assertFalse(self.policy.invoices)
         # Invoices should be made when class is initiated
         pa = PolicyAccounting(self.policy.id)
         # Amount due per invoice should be annual premium split by months in a year
         amount_due_per_invoice = self.policy.annual_premium / 12
-        
+
         self.assertEquals(len(self.policy.invoices), 12)
         self.assertEquals(self.policy.invoices[0].amount_due, amount_due_per_invoice)
 
