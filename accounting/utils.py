@@ -32,7 +32,8 @@ class PolicyAccounting(object):
 
         # Retrieve all invoices with a bill date on or prior to date cursor
         invoices = Invoice.query.filter_by(policy_id=self.policy.id)\
-                                .filter(Invoice.bill_date <= date_cursor)\
+                                .filter(Invoice.bill_date <= date_cursor,
+                                        Invoice.deleted == False)\
                                 .order_by(Invoice.bill_date)\
                                 .all()
         due_now = 0
@@ -57,7 +58,7 @@ class PolicyAccounting(object):
         if not date_cursor:
             date_cursor = datetime.now().date()
 
-        # If no contact_id was provided by callee, assign contact to the
+        # If no contact_id was provided, assign contact to the
         # policy's name_insured. Will be used as the contact for the payment
         if not contact_id:
             try:
@@ -87,7 +88,8 @@ class PolicyAccounting(object):
 
         # Get all invoices past the due_date, using date_cursor
         invoices = Invoice.query.filter_by(policy_id=self.policy.id)\
-                                .filter(date_cursor >= Invoice.due_date)\
+                                .filter(date_cursor >= Invoice.due_date,
+                                        Invoice.deleted == False)\
                                 .order_by(Invoice.bill_date)\
                                 .all()
 
@@ -121,6 +123,30 @@ class PolicyAccounting(object):
         else:
             print "THIS POLICY SHOULD NOT CANCEL"
 
+    def switch_billing_schedule(self, billing_schedule, date_cursor=None):
+        """
+        Switches policy to a new billing schedule, marks any
+        invoices for the current billing schedule as deleted
+        """
+        if not date_cursor:
+            date_cursor = datetime.now().date()
+
+        invoices = Invoice.query.filter_by(policy_id=self.policy.id)\
+                                .filter(
+                                    Invoice.bill_date <= date_cursor,
+                                    Invoice.deleted == False)\
+                                .order_by(Invoice.bill_date)\
+                                .all()
+        # Mark invoices as deleted
+        for invoice in invoices:
+            invoice.deleted = True
+        # Switch policy to new billing_schedule
+        self.policy.billing_schedule = billing_schedule
+
+        db.session.commit()
+
+        self.make_invoices()
+
     def make_invoices(self):
         """
         Create invoices for the policy's Billing Schedule.
@@ -129,7 +155,8 @@ class PolicyAccounting(object):
         """
 
         for invoice in self.policy.invoices:
-            invoice.delete()
+            invoice.deleted = True
+            # invoice.delete()
 
         billing_schedules = {'Annual': None, 'Semi-Annual': 3, 'Quarterly': 4, 'Monthly': 12}
 
