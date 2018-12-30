@@ -101,7 +101,9 @@ class PolicyAccounting(object):
 
     def evaluate_cancel(self, date_cursor=None):
         """
-        Prints whether or not policy should have cancelled.
+        Prints whether or not policy should have cancelled and returns
+        a bool should_cancel.
+
         If there is an account balance on the cancel date, then
         the policy should have cancelled.
         """
@@ -113,15 +115,46 @@ class PolicyAccounting(object):
                                 .order_by(Invoice.bill_date)\
                                 .all()
 
+        should_cancel = False
         # Check for an existing account balance on the cancel_date
         for invoice in invoices:
             if not self.return_account_balance(invoice.cancel_date):
                 continue
             else:
+                should_cancel = True
                 print "THIS POLICY SHOULD HAVE CANCELED"
                 break
         else:
+            should_cancel = False
             print "THIS POLICY SHOULD NOT CANCEL"
+
+        return should_cancel
+
+    def cancel_policy(self, comments=None, date_cursor=None):
+        """ Cancels a policy. """
+        if not date_cursor:
+            date_cursor = datetime.now().date()
+
+        # Get all upcoming invoices
+        invoices = Invoice.query.filter_by(policy_id=self.policy.id)\
+                                .filter(Invoice.bill_date > date_cursor)\
+                                .order_by(Invoice.bill_date)\
+                                .all()
+
+        # Cancel any future invoices
+        for invoice in invoices:
+            invoice.deleted = True
+
+        # Cancel the policy
+        self.policy.status = 'Canceled'
+        self.policy.termination_date = datetime.now().date()
+        self.policy.termination_comments = comments
+
+        db.session.commit()
+
+        print '{policy} canceled.\nReason provided: {comments}'.format(
+            policy=self.policy.policy_number,
+            comments=comments)
 
     def switch_billing_schedule(self, billing_schedule, date_cursor=None):
         """

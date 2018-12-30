@@ -17,6 +17,8 @@ class Policy(db.Model):
     annual_premium = db.Column(u'annual_premium', db.INTEGER(), nullable=False)
     named_insured = db.Column(u'named_insured', db.INTEGER(), db.ForeignKey('contacts.id'))
     agent = db.Column(u'agent', db.INTEGER(), db.ForeignKey('contacts.id'))
+    termination_date = db.Column(u'termination_date', db.DATE())
+    termination_comments = db.Column(u'termination_comments', db.TEXT())
 
     def __init__(self, policy_number, effective_date, annual_premium):
         self.policy_number = policy_number
