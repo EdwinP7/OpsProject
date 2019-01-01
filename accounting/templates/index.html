@@ -1,15 +1,12 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Some sort of title?</title>
-  <meta name="description" content="What is this?">
-  <meta name="author" content="Who?">
-  <!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-</head>
-<body>
-    <p>Your server is working.</p>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Welcome!</h1>
+  <div class="card col-md-auto">
+  <div class="card-body">
+    <h5 class="card-title">Policies</h5>
+    <p class="card-text">Search for a policy to view basic information, invoices and payments.</p>
+    <a href="/policies/" class="btn btn-primary">Search Now</a>
+  </div>
+</div>
+{% endblock %}

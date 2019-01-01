@@ -18,6 +18,17 @@ class PolicyAccounting(object):
     """
     def __init__(self, policy_id):
         self.policy = Policy.query.filter_by(id=policy_id).one()
+
+        # Get named insured
+        if self.policy.named_insured:
+            self.named_insured = Contact.query.filter_by(id=self.policy.named_insured).one().name
+        else:
+            self.named_insured = 'N/A'
+        # Get agent
+        if self.policy.agent:
+            self.agent = Contact.query.filter_by(id=self.policy.agent).one().name
+
+
         # Invoices should be made on instance creation,
         # unless policy already has invoices
         if not self.policy.invoices:

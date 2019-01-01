@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Search Policies</h1>
+    <form action="{{ url_for('policy')}}" method="GET" class="mx-auto text-left">
+      <div class="form-group" data-bind="css: { error: policy_id.hasError }">
+        <label for="policyNumber">Policy #</label>
+        <input type="text" class="form-control" id="policyNumber" name="policy_id" placeholder="Enter policy number" data-bind='value: policy_id, valueUpdate: "afterkeydown"'>
+        <span data-bind='visible: policy_id.hasError, text: policy_id.validationMessage'> </span>
+      </div>
+      <div class="form-group" data-bind="css: { error: date.hasError }">
+        <label for="policyDate">Date</label>
+        <input type="date" class="form-control" id="policyDate" name="date" data-bind='value: date, valueUpdate: "afterkeydown"'>
+        <span data-bind='visible: date.hasError, text: date.validationMessage'> </span>
+      </div>
+      <button data-bind="disable: policy_id.hasError() || date.hasError()" type="submit" class="btn btn-primary">View</button>
+    </form>
+    <script type='text/javascript' src='http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.2.js'></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='accounting/js/PolicyViewModel.js') }}"></script>
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{policy_details.policy_number}}</h1>
+
+<h3>Showing balance as of {{policy_details.date}}</h3>
+
+<div class="row mt-5 p-2">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body shadow">
+                <h5 class="card-title">Named Insured</h5>
+                <p class="card-text">{{policy_details.named_insured}}</p>
+                <h5>Agent</h5>
+                <p class="card-text">{{policy_details.agent}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body shadow">
+                <h5 class="card-title">Account Balance</h5>
+                <p class="card-text">${{policy_details.account_balance}}</p>
+                <h5 class="card-title">Annual Premium</h5>
+                <p class="card-text">${{policy_details.annual_premium}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <!-- Invoices Grid -->
+    <div class="col-md-6 grid">
+        <h3>Invoices</h3>
+        <table class="table table-striped">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">Bill Date</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">Amount Due</th>
+            <th scope="col">Cancel Date</th>
+            <th scope="col">Deleted?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in policy_details.invoices %}
+            <tr>
+            <td>{{ invoice.bill_date }}</th>
+            <td>{{ invoice.due_date }}</td>
+            <td>${{ invoice.amount_due }}</td>
+            <td>{{ invoice.cancel_date }}</td>
+            <td>{{ invoice.deleted }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    <!-- End Invoices Grid -->
+
+    <!-- Payments Grid -->
+    <div class="col-md-6 grid">
+        <h3>Payments</h3>
+        <table class="table table-striped">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">Paid</th>
+            <th scope="col">Transaction Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in policy_details.payments %}
+            <tr>
+            <td>${{ payment.amount_paid }}</th>
+            <td>{{ payment.transaction_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    <!-- End Payments Grid -->
+
+</div>
+{% endblock %}

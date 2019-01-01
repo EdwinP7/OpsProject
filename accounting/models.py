@@ -26,7 +26,7 @@ class Policy(db.Model):
         self.annual_premium = annual_premium
 
     invoices = db.relation('Invoice', primaryjoin="Invoice.policy_id==Policy.id")
-
+    payments = db.relation('Payment', primaryjoin="Payment.policy_id==Policy.id")
 
 class Contact(db.Model):
     __tablename__ = 'contacts'
