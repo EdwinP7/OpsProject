@@ -25,4 +25,4 @@ function PolicyViewModel(policy_id, date) {
     this.date = ko.observable(date).extend({ required: "Please enter a date" });
 }
 
-ko.applyBindings(new PolicyViewModel(1, '2015-02-01'));
+ko.applyBindings(new PolicyViewModel(1, '2015-05-01'));

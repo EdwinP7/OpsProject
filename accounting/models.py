@@ -1,6 +1,6 @@
 from accounting import db
 # from sqlalchemy.ext.declarative import declarative_base
-# 
+
 # DeclarativeBase = declarative_base()
 
 class Policy(db.Model):
@@ -25,15 +25,15 @@ class Policy(db.Model):
         self.effective_date = effective_date
         self.annual_premium = annual_premium
 
-    invoices = db.relation('Invoice', primaryjoin="Invoice.policy_id==Policy.id")
-    payments = db.relation('Payment', primaryjoin="Payment.policy_id==Policy.id")
+    invoices = db.relation('Invoice', primaryjoin="Invoice.policy_id==Policy.id", order_by="Invoice.deleted, Invoice.bill_date")
+    payments = db.relation('Payment', primaryjoin="Payment.policy_id==Policy.id", order_by="Payment.transaction_date")
 
 class Contact(db.Model):
     __tablename__ = 'contacts'
 
     __table_args__ = {}
 
-    #column definitions
+    # column definitions
     id = db.Column(u'id', db.INTEGER(), primary_key=True, nullable=False)
     name = db.Column(u'name', db.VARCHAR(length=128), nullable=False)
     role = db.Column(u'role', db.Enum(u'Named Insured', u'Agent'), nullable=False)

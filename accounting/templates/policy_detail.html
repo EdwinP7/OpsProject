@@ -30,26 +30,26 @@
 
 <div class="row mt-5">
     <!-- Invoices Grid -->
-    <div class="col-md-6 grid">
+    <div class="col-md-6 table-responsive">
         <h3>Invoices</h3>
         <table class="table table-striped">
         <thead class="thead-light">
             <tr>
+            <th scope="col">Amount Due</th>
             <th scope="col">Bill Date</th>
             <th scope="col">Due Date</th>
-            <th scope="col">Amount Due</th>
             <th scope="col">Cancel Date</th>
             <th scope="col">Deleted?</th>
             </tr>
         </thead>
         <tbody>
             {% for invoice in policy_details.invoices %}
-            <tr>
+            <tr style="{{ 'background-color: #dc35454a' if invoice.deleted }}">
+            <td>${{ invoice.amount_due }}</td>
             <td>{{ invoice.bill_date }}</th>
             <td>{{ invoice.due_date }}</td>
-            <td>${{ invoice.amount_due }}</td>
             <td>{{ invoice.cancel_date }}</td>
-            <td>{{ invoice.deleted }}</td>
+            <td>{{ 'Yes' if invoice.deleted else 'No' }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -58,7 +58,7 @@
     <!-- End Invoices Grid -->
 
     <!-- Payments Grid -->
-    <div class="col-md-6 grid">
+    <div class="col-md-6 grtable-responsiveid">
         <h3>Payments</h3>
         <table class="table table-striped">
         <thead class="thead-light">
