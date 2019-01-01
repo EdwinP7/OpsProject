@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Contacts</h1>
+
+<div class="row mt-5">
+    <!-- Contacts Grid -->
+    <div class="table-responsive">
+        <table class="table table-striped">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+            <td><a href="/contacts/{{contact.id}}/">{{ contact.name }}</a></td>
+            <td>{{ contact.role }}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    <!-- End Invoices Grid -->
+
+</div>
+{% endblock %}

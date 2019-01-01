@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{contact.name}}</h1>
+  
+  <div class="container p-2">
+  <div class="card mt-2">
+      <div class="card-body">
+        <h5 class="card-title">Enrolled In</h5>
+        {% if contact.policy %}
+            <a href="/policy/?policy_id={{contact.policy.id}}" class="card-text">{{contact.policy.policy_number}}</a>
+        {% else %}
+            <p class="card-text">No policy found.</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="card mt-2">
+      <div class="card-body">
+        <h5 class="card-title">Last Payment</h5>
+        {% if contact.last_payment %}
+            <p class="card-text">${{contact.last_payment.amount_paid}} on {{contact.last_payment.transaction_date}}</p>
+        {% else %}
+            <p class="card-text">No payment to show.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

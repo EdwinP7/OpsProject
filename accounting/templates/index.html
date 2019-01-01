@@ -2,11 +2,21 @@
 
 {% block content %}
   <h1>Welcome!</h1>
-  <div class="card col-md-auto">
-  <div class="card-body">
-    <h5 class="card-title">Policies</h5>
-    <p class="card-text">Search for a policy to view basic information, invoices and payments.</p>
-    <a href="/policies/" class="btn btn-primary">Search Now</a>
+  
+  <div class="row">
+    <div class="card col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Policies</h5>
+        <p class="card-text">Search for a policy to view basic information, invoices and payments.</p>
+        <a href="/policies/" class="btn btn-primary">Search Now</a>
+      </div>
+    </div>
+    <div class="card col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Contacts</h5>
+        <p class="card-text">View list of contacts.</p>
+        <a href="/contacts/" class="btn btn-primary">View Now</a>
+      </div>
+    </div>
   </div>
-</div>
 {% endblock %}
